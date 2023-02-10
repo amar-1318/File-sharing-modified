@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <!-- <link href="./style.css" rel="stylesheet" type="text/css"> -->
+    <style>
+        :root {
+            --main-bg-colour: #eff5fe;
+            --border-color: rgb(118, 128, 131);
+            --container-width: 500px
+        }
+
+        body,
+        html {
+            font-family: system-ui;
+            background: var(--main-bg-colour);
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .drop-zone {
+            width: var(--container-width);
+            min-height: 300px;
+            border: 2px dashed var(--border-color);
+            margin: 40px;
+            border-radius: 10px;
+            /* transition: all .2s ease; */
+            position: relative
+        }
+
+        .drop-zone:hover {
+            background: #ddd
+        }
+
+        .drop-zone,
+        .upload-container {
+            /* width: var(--container-width); */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .upload-container {
+            background: #ffffff;
+            border-radius: 25px;
+            box-shadow: 0px 20px 20px #0000002e;
+            max-width: 60%;
+            margin-left: 20%;
+            /* margin-top: 20%; */
+        }
+
+        .btnn:hover {
+            cursor: pointer;
+            background-color: rgb(235, 76, 62);
+        }
+
+        .btnn {
+            border-radius: 4px;
+            margin-bottom: 20px;
+            width: 500px;
+            margin-left: 7%;
+            margin-top: 10px;
+
+        }
+
+        #fileinput {
+            display: none;
+        }
+
+        .browsebtn {
+            color: rgb(11, 119, 236);
+            cursor: pointer;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <% if (locals.fileLink !=null) {%>
+        <div style="margin-bottom: 1rem; display: grid; justify-content: center; align-items: center; ">
+            <h4> Your File is uploaded on below link</h4>
+            <a href="<%= locals.fileLink %>">
+                <%= locals.fileLink %>
+            </a>
+            <br>
+            <!--  -->
+            <!-- <h1 id="myInput"><%= locals.fileLink %></h1> -->
+            <button onclick="myFunction('#myInput')">Copy Link</button>
+        </div>
+
+        <% } %>
+            <section class="upload-container" style="margin-top: 5%;">
+
+                <form action="/upload" method="post" enctype="multipart/form-data">
+
+                    <!-- <label for="file">File: </label> -->
+
+                    <div class="drop-zone" id="drop-zone">
+                        <input type="file" id="file" name="file" required />
+                        <div class="title">
+                            Drop your Files here or, <span class="browsebtn" style="color: blue;">browse</span>
+                        </div>
+                    </div>
+                    <label style="margin-left: 40px;" for="password">Password: </label>
+                    <input type="password" id="password" name="password" />
+                    <br>
+                    <button id="browsebtn" class="btnn" onclick="uploadFiles()">Share</button>
+
+                </form>
+
+
+            </section>
+
+            <script>
+                const browsebtn = document.querySelector(".browsebtn");
+                const fileinput = document.querySelector("#file");
+
+                function uploadFiles() {
+                    var files = document.getElementById('file').files;
+                    if (files.length == 0) {
+                        alert("Please first choose or drop any file(s)...");
+                        return;
+                    }
+                    var filenames = "";
+                    for (var i = 0; i < files.length; i++) {
+                        filenames += files[i].name + "\n";
+                    }
+                    alert("Selected file(s) :\n____________________\n" + filenames);
+                }
+                browsebtn.addEventListener("click", () => {
+                    fileinput.click();
+                })
+
+                var $dropzone = document.querySelector('.dropzone');
+                var input = document.getElementById('file-upload');
+
+                $dropzone.ondragover = function (e) {
+                    e.preventDefault();
+                    this.classList.add('dragover');
+                };
+                $dropzone.ondragleave = function (e) {
+                    e.preventDefault();
+                    this.classList.remove('dragover');
+                };
+                $dropzone.ondrop = function (e) {
+                    e.preventDefault();
+                    this.classList.remove('dragover');
+                    input.files = e.dataTransfer.files;
+                }
+
+                // function myFunction(element) {
+                //     // Get the text field
+                //     var copyText = document.getElementById("myInput");
+
+                //     // Select the text field
+                //     copyText.select();
+                //     copyText.setSelectionRange(0, 99999); // For mobile devices
+
+                //     // Copy the text inside the text field
+                //     navigator.clipboard.writeText(copyText.value);
+
+                //     // Alert the copied text
+                //     alert("Copied the text: " + copyText.value);
+                //     console.log("copyy");
+                // }
+
+
+            </script>
+
+
+</body>
+
+</html>
